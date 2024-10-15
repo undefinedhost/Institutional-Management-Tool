@@ -18,36 +18,36 @@ class Address(models.Model):
     def __str__(self):
         return "Address Saved !"
 
+
 class VerificationDocuments(models.Model):
     documentType = models.CharField(max_length = 20, choices= doc_choices)
     documentUpload = models.FileField(upload_to="verifydocs/")
-    
+
 
 class RelationshipContact(models.Model):
 
     rlname = models.CharField(max_length = 50)
     rlCategory = models.CharField(max_length = 25, choices= rl_category)
-    rlContact = models.IntegerField(max_length= 10, blank= False, null= False)
+    rlContact = models.CharField(max_length= 10, blank= False, null= False)
     rladdress = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
     
     def __str__(self):
-        return f"{self.rlCategory} information saved !"
-    
-    
+        return f"{self.rlCategory} information saved !"    
+
 
 class Person(models.Model):
     
-    fullname = models.CharField(max_length = 50)
+    firstName = models.CharField(max_length = 25)
+    lastName = models.CharField(max_length = 25)
     dateofbirth = models.DateField(auto_now= False, auto_now_add= False)
     gender = models.CharField(max_length = 25, choices= gender_choices)
     contactnumber = models.CharField(max_length= 18, blank= True, null= True)
     emailaddress = models.EmailField(max_length= 50, blank= True, null= True)
     address = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
-    rlcontactinfo = models.ForeignKey(RelationshipContact, on_delete=models.CASCADE)
-    documents = models.ManyToManyField(VerificationDocuments, related_name="verification_docs") 
+    rlcontactinfo = models.ForeignKey(RelationshipContact, on_delete=models.DO_NOTHING)
+    documents = models.ForeignKey(VerificationDocuments, on_delete=models.DO_NOTHING)
     religion = models.CharField(max_length = 25, choices=religion_choices)
     caste = models.CharField(max_length = 30)
-    
 
     class Meta:
         abstract = True
